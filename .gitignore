@@ -1,21 +1,42 @@
-.gradle
+# === Build artifacts ===
 **/build/
 !src/**/build/
+out/
+*.class
+*.jar
+*.war
+*.ear
 
-# Ignore Gradle GUI config
+# === Gradle ===
+.gradle/
+.gradle-task-name-cache
 gradle-app.setting
-
-# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
 !gradle-wrapper.jar
-
-# Avoid ignore Gradle wrappper properties
 !gradle-wrapper.properties
+!gradle/wrapper/gradle-wrapper.*
 
-# Cache of project
-.gradletasknamecache
+# === IntelliJ IDEA ===
+*.iml
+.idea/
+*.iws
+*.ipr
 
-# Eclipse Gradle plugin generated files
-# Eclipse Core
+# === Eclipse ===
 .project
-# JDT-specific (Eclipse Java Development Tools)
 .classpath
+
+# === Logs & temp files ===
+*.log
+logs/
+tmp/
+*.tmp
+*.sw?
+
+# === OS-specific ===
+.DS_Store
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# === Environment files ===
+.env*
