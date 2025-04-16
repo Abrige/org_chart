@@ -1,4 +1,4 @@
-# org_chart
+# Organigramma Aziendale
 Web application per la gestione di aziende, organigrammi e dipendenti.
 Ogni azienda può avere una struttura organizzativa gerarchica, con dipendenti assegnati a diversi ruoli e reparti. Il progetto include un database relazionale completo e l’integrazione di Java, Spring Boot, Hibernate (JPA) per il backend.
 Funzionalità principali:
