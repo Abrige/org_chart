@@ -1,10 +1,12 @@
 package it.telematica.org_chart.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Immutable;
 
 import java.time.LocalDateTime;
 @Entity
-@Table(name = "requests", schema = "org_chart")
+@Immutable
+@Table(name = "v_requests", schema = "org_chart")
 public class Request {
     @Id
     private Integer id;
@@ -13,8 +15,11 @@ public class Request {
     @Column(columnDefinition = "TINYINT(1)", name = "entity_type")
     private Integer entityType; // TODO rivedere come gestire i tipi di entità
     @ManyToOne
-    @JoinColumn(name = "account_fk", referencedColumnName = "id")
+    @JoinColumn(name = "account_id", referencedColumnName = "id")
     private Account account;
+    @ManyToOne
+    @JoinColumn(name = "company_id", referencedColumnName = "id")
+    private Company company;
     @Column(columnDefinition = "TINYINT(1)", name = "is_approved")
     private boolean isApproved;
     private LocalDateTime operationDate;
@@ -58,6 +63,14 @@ public class Request {
 
     public void setAccount(Account account) {
         this.account = account;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
 
     public boolean isApproved() {
