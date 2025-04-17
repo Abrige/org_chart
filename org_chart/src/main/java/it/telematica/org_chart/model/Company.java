@@ -17,8 +17,8 @@ public class Company {
     private City city;
     private String logoUrl;
     private Integer numOfEmployees;
-    @Column(columnDefinition = "TINYINT(1)", name = "deleted")
-    private boolean deleted;
+    @Column(columnDefinition = "TINYINT(1)", name = "is_deleted")
+    private boolean isDeleted;
     // serve per mostrare i dati dal join della tabella many to many che abbiamo creato sul database però dall'altro lato
     @ManyToMany(mappedBy = "companies")
     private Set<Account> accounts = new HashSet<>();
@@ -71,19 +71,19 @@ public class Company {
         this.numOfEmployees = numOfEmployees;
     }
 
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
-    }
-
     public Set<Account> getAccounts() {
         return accounts;
     }
 
     public void setAccounts(Set<Account> accounts) {
         this.accounts = accounts;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
     }
 }

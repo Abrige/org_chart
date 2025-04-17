@@ -18,15 +18,12 @@ public class Account implements UserDetails {
     private String mail;
     private String password;
     @ManyToOne
-    @JoinColumn(name = "employee_fk", referencedColumnName = "id")
-    private Employee employee;
-    // TODO rivedere questo enum
-    @Enumerated(EnumType.ORDINAL)
-    private UserRole userRole;
-    @Column(columnDefinition = "TINYINT(1)", name = "deleted")
-    private boolean deleted;
+    @JoinColumn(name = "role_fk", referencedColumnName = "id")
+    private Role role;
+    @Column(columnDefinition = "TINYINT(1)", name = "is_deleted")
+    private boolean isDeleted;
     // serve per mostrare i dati dal join della tabella many to many che abbiamo creato sul database
-    @ManyToMany()
+    @ManyToMany
     @JoinTable(name = "accounts_companies",
             joinColumns = @JoinColumn(name = "account_fk"),
             inverseJoinColumns = @JoinColumn(name = "company_fk"))
@@ -48,46 +45,24 @@ public class Account implements UserDetails {
         this.mail = mail;
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
-    }
-
-    @Override
-    public String getUsername() {
-        return this.mail; // Assuming mail is used as username
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public Employee getEmployee() {
-        return employee;
+    public Role getRole() {
+        return role;
     }
 
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
-    }
-
-    public UserRole getUserRole() {
-        return userRole;
-    }
-
-    public void setUserRole(UserRole userRole) {
-        this.userRole = userRole;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public boolean isDeleted() {
-        return deleted;
+        return isDeleted;
     }
 
     public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
+        isDeleted = deleted;
     }
 
     public Set<Company> getCompanies() {
@@ -96,5 +71,40 @@ public class Account implements UserDetails {
 
     public void setCompanies(Set<Company> companies) {
         this.companies = companies;
+    }
+
+    @Override
+    public String getUsername() {
+        return mail;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return UserDetails.super.isAccountNonExpired();
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return UserDetails.super.isAccountNonLocked();
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return UserDetails.super.isCredentialsNonExpired();
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return UserDetails.super.isEnabled();
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.getName()));
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
     }
 }
