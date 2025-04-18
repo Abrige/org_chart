@@ -12,14 +12,16 @@ public class UserService {
     private AccountRepository accountRepository;
     private PasswordEncoder passwordEncoder;
 
-    public UserService(AccountRepository accountRepository, PasswordEncoder passwordEncoder) {
+    public UserService(AccountRepository accountRepository,
+                       PasswordEncoder passwordEncoder) {
         this.accountRepository = accountRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
     // crea un account con lo username l'email e la password criptata, lo diamo all'account repo che la gestisce lui
     // sul db
-    public void register(String email, String password) {
+    public void register(String email,
+                         String password) {
         Account account = new Account();
         account.setMail(email);
         account.setPassword(passwordEncoder.encode(password));

@@ -1,6 +1,5 @@
 package it.telematica.org_chart;
 
-import org.apache.poi.sl.usermodel.Sheet;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

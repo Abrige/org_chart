@@ -25,10 +25,12 @@ public class JwtUtils {
     @Value("${jwt.expirationMs}")
     private int jwtExpirationMs;
 
-    private SecretKey getSigningKey(){
-        byte [] keyBytes = Decoders.BASE64.decode(secret);
+    private SecretKey getSigningKey() {
+        byte[] keyBytes = Decoders.BASE64.decode(secret);
         return Keys.hmacShaKeyFor(keyBytes);
-    };
+    }
+
+    ;
 
     // serve per generare il token in base all'username dell'utente
     public String generateToken(UserDetails userDetails) {
@@ -51,7 +53,8 @@ public class JwtUtils {
     }
 
     // dato un token verifica se è valido
-    public boolean validateToken(String token, UserDetails userDetails) {
+    public boolean validateToken(String token,
+                                 UserDetails userDetails) {
         String username = getUsernameFromToken(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }

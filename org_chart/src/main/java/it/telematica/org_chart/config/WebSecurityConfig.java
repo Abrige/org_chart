@@ -23,12 +23,13 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 // contiene vari bean per configurazione della sicurezza web, ad esempio password encoder, security filter chain, ecc (anche cose non inserite in questo file)
-public class WebSecurityConfig{
+public class WebSecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final UserDetailsService userDetailsService;
 
-    public WebSecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, UserDetailsService userDetailsService) {
+    public WebSecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter,
+                             UserDetailsService userDetailsService) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.userDetailsService = userDetailsService;
     }

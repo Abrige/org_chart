@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping(value ="/api/auth")
+@RequestMapping(value = "/api/auth")
 public class AuthController {
 
     private AuthenticationManager authenticationManager;
@@ -47,7 +47,7 @@ public class AuthController {
     @PostMapping(value = "/register")
     public ResponseEntity<Void> register(@RequestBody AuthRequest authRequest) {
         // controlla se l'utente non era già stato registrato
-        if(userService.isRegistered(authRequest.getMail())) {
+        if (userService.isRegistered(authRequest.getMail())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
         userService.register(authRequest.getMail(), authRequest.getPassword());

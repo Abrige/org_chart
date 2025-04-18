@@ -15,7 +15,8 @@ public class AdminRestController {
     private HistoryRepository historyRepository;
     private RequestRepository requestRepository;
 
-    public AdminRestController(HistoryRepository historyRepository, RequestRepository requestRepository) {
+    public AdminRestController(HistoryRepository historyRepository,
+                               RequestRepository requestRepository) {
         this.historyRepository = historyRepository;
         this.requestRepository = requestRepository;
     }

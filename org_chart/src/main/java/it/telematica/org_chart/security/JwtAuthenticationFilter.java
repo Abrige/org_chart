@@ -22,7 +22,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtUtils jwtUtils;
     private final UserDetailsService userDetailsService;
 
-    public JwtAuthenticationFilter(JwtUtils jwtUtils, UserDetailsService userDetailsService) {
+    public JwtAuthenticationFilter(JwtUtils jwtUtils,
+                                   UserDetailsService userDetailsService) {
         this.jwtUtils = jwtUtils;
         this.userDetailsService = userDetailsService;
     }
@@ -36,18 +37,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String jwt = null;
         String username = null;
 
-        if(authHeader != null && authHeader.startsWith("Bearer ")) { // Bearer --> "portatore", cioè quello che porta
+        if (authHeader != null && authHeader.startsWith("Bearer ")) { // Bearer --> "portatore", cioè quello che porta
             jwt = authHeader.substring(7);
             username = jwtUtils.getUsernameFromToken(jwt);
         }
 
         // se c'è un username e non c'è ancora un utente loggato allora c'è la logica per autenticare l'utente
-        if(username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
 
             // security context è un contesto di sicurezza globale che contiene informazioni sull'autenticazione corrente
-            if(jwtUtils.validateToken(jwt, userDetails)) {
+            if (jwtUtils.validateToken(jwt, userDetails)) {
                 UsernamePasswordAuthenticationToken authToken =
                         new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

@@ -9,7 +9,8 @@ public class AuthRequest {
     public AuthRequest() {
     }
 
-    public AuthRequest(String mail, String password) {
+    public AuthRequest(String mail,
+                       String password) {
         this.mail = mail;
         this.password = password;
     }

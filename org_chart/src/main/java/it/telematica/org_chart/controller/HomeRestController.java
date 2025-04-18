@@ -17,9 +17,11 @@ public class HomeRestController {
     private CountriesRepository countriesRepository;
     private CitiesRepository citiesRepository;
 
-    public HomeRestController(CompanyRepository companyRepository, EmployeeRepository employeeRepository,
+    public HomeRestController(CompanyRepository companyRepository,
+                              EmployeeRepository employeeRepository,
                               CompanyHierarchiesRepository companyHierarchiesRepository,
-                              CountriesRepository countriesRepository, CitiesRepository citiesRepository) {
+                              CountriesRepository countriesRepository,
+                              CitiesRepository citiesRepository) {
 
         this.companyRepository = companyRepository;
         this.employeeRepository = employeeRepository;
@@ -74,7 +76,7 @@ public class HomeRestController {
 
         Country country = countriesRepository.findById(id).orElse(null);
 
-        if(country != null) {
+        if (country != null) {
             return citiesRepository.findByCountryOrderByNameAsc(country);
         }
 
