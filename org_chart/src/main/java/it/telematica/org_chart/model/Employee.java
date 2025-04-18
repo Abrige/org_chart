@@ -25,15 +25,8 @@ public class Employee {
     @ManyToOne
     @JoinColumn(name = "company_fk", referencedColumnName = "id")
     private Company company;
-    @Column(columnDefinition = "TINYINT(1)", name = "deleted")
-    private boolean deleted;
-    @ManyToMany
-    @JoinTable(name = "employees_hierarchies",
-            joinColumns = @JoinColumn(name = "superior_fk"),
-            inverseJoinColumns = @JoinColumn(name = "subordinate_fk"))
-    private Set<Employee> superiors = new HashSet<>();
-    @ManyToMany(mappedBy = "superiors")
-    private Set<Employee> subordinates = new HashSet<>();
+    @Column(columnDefinition = "TINYINT(1)", name = "is_deleted")
+    private boolean isDeleted;
 
     public Integer getId() {
         return id;
@@ -92,26 +85,10 @@ public class Employee {
     }
 
     public boolean isDeleted() {
-        return deleted;
+        return isDeleted;
     }
 
     public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
-    }
-
-    public Set<Employee> getSuperiors() {
-        return superiors;
-    }
-
-    public void setSuperiors(Set<Employee> superiors) {
-        this.superiors = superiors;
-    }
-
-    public Set<Employee> getSubordinates() {
-        return subordinates;
-    }
-
-    public void setSubordinates(Set<Employee> subordinates) {
-        this.subordinates = subordinates;
+        this.isDeleted = deleted;
     }
 }

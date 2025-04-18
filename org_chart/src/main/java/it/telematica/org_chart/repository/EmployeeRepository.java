@@ -10,4 +10,5 @@ public interface EmployeeRepository extends CrudRepository<Employee, Integer> {
 
     // ritorna tutti gli employee in base alla company
     List<Employee> findByCompanyOrderByIdAsc(Company company);
+
 }
