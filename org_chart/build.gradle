@@ -25,6 +25,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.apache.poi:poi:5.4.1'
     implementation 'io.jsonwebtoken:jjwt-api:0.12.6'
+    implementation 'org.mariadb.jdbc:mariadb-java-client:3.5.3'
     runtimeOnly 'com.mysql:mysql-connector-j'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'

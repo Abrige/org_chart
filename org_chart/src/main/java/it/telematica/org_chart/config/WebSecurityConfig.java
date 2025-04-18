@@ -37,7 +37,7 @@ public class WebSecurityConfig {
     // configura il lato della sicurezza dell'http e quindi anche il controllo degli accessi per determinati url
     // sarebbe il filtro standard di spring security, nel nostro caso usiamo prima il filtro di jwt
     @Bean
-    public SecurityFilterChain springSecurityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain jwtSecurityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth

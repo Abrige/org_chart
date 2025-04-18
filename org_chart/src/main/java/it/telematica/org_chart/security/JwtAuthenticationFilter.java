@@ -56,8 +56,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
         }
-
-        filterChain.doFilter(request, response);
-
+        String requestPath = request.getServletPath();
+        if(requestPath.startsWith("/api/auth") || requestPath.startsWith("/admin")) {
+            filterChain.doFilter(request, response);
+        }
     }
 }
