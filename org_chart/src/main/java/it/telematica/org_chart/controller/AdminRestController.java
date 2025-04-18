@@ -31,5 +31,5 @@ public class AdminRestController {
     public List<Request> getRequests() {
         return requestRepository.findByOrderByOperationDateDesc();
     }
-    
+
 }
