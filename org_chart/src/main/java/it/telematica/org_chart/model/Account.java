@@ -14,6 +14,8 @@ import java.util.Set;
 @Table(name = "accounts", schema = "org_chart")
 public class Account implements UserDetails {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // indica l'auto increment, dal lato di spring security,
+    // poichè implementiamo l'interfaccia UserDetails
     private Integer id;
     private String mail;
     private String password;
