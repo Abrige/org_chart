@@ -30,6 +30,9 @@ public class Account implements UserDetails {
             joinColumns = @JoinColumn(name = "account_fk"),
             inverseJoinColumns = @JoinColumn(name = "company_fk"))
     private Set<Company> companies = new HashSet<>();
+    // serve per mostrare i dati dal join della tabella many to many che abbiamo creato sul database però dall'altro lato
+    @ManyToMany(mappedBy = "accounts")
+    private Set<Request> request = new HashSet<>();
 
     public Integer getId() {
         return id;
@@ -73,6 +76,14 @@ public class Account implements UserDetails {
 
     public void setCompanies(Set<Company> companies) {
         this.companies = companies;
+    }
+
+    public Set<Request> getRequest() {
+        return request;
+    }
+
+    public void setRequest(Set<Request> request) {
+        this.request = request;
     }
 
     @Override
