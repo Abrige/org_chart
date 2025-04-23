@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Creato il: Apr 22, 2025 alle 11:54
+-- Creato il: Apr 23, 2025 alle 15:19
 -- Versione del server: 10.4.28-MariaDB
 -- Versione PHP: 8.2.4
 
@@ -30,10 +30,69 @@ SET time_zone = "+00:00";
 CREATE TABLE `accounts` (
   `id` int(11) NOT NULL,
   `mail` varchar(300) NOT NULL,
-  `password` varchar(50) NOT NULL,
-  `role_fk` int(11) NOT NULL DEFAULT 0,
+  `password` varchar(500) NOT NULL,
+  `role_fk` int(11) NOT NULL DEFAULT 1,
   `is_deleted` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dump dei dati per la tabella `accounts`
+--
+
+INSERT INTO `accounts` (`id`, `mail`, `password`, `role_fk`, `is_deleted`) VALUES
+(2, 'mario@example.com', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 1, 0),
+(3, 'admin@example.com', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 3, 0),
+(4, 'companyadmin@example.com', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 2, 0),
+(5, 'tzamora0@dailymail.co.uk', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 1, 0),
+(6, 'jlornsen1@netscape.com', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 1, 0),
+(7, 'pboulger2@google.ru', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 2, 0),
+(8, 'afasler3@rakuten.co.jp', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 1, 0),
+(9, 'mdielhenn4@shareasale.com', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 1, 1),
+(10, 'tpittam5@ox.ac.uk', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 1, 0),
+(11, 'tstruys6@mashable.com', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 1, 0),
+(12, 'jadvani7@fastcompany.com', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 1, 0),
+(13, 'alympenie8@51.la', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 2, 0),
+(14, 'rfilyakov9@linkedin.com', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 1, 1),
+(15, 'lflawna@deliciousdays.com', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 2, 0),
+(16, 'bmingardib@mapquest.com', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 1, 1),
+(17, 'rvedmorec@histats.com', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 1, 0),
+(18, 'sbegginid@webs.com', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 1, 0),
+(19, 'sstaniere@imgur.com', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 1, 0),
+(20, 'dgouldingf@t-online.de', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 1, 0),
+(21, 'ppadleyg@sfgate.com', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 1, 1),
+(22, 'vbartlomieczakh@seesaa.net', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 3, 0),
+(23, 'mkrysztowczyki@shop-pro.jp', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 1, 0),
+(24, 'lalessandrellij@skyrock.com', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 1, 0),
+(25, 'wperrycostk@purevolume.com', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 1, 0),
+(26, 'jfluryl@edublogs.org', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 1, 0),
+(27, 'qarrowm@phpbb.com', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 1, 0),
+(28, 'pgalileen@discovery.com', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 1, 0),
+(29, 'agoodeeo@adobe.com', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 1, 0),
+(30, 'levittp@ebay.co.uk', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 3, 1),
+(31, 'tillyesq@booking.com', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 1, 0),
+(32, 'hmaidenr@mediafire.com', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 2, 0),
+(33, 'rportlocks@archive.org', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 2, 0),
+(34, 'eottot@netvibes.com', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 2, 0),
+(35, 'johagertyu@ted.com', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 2, 0),
+(36, 'ngypsonv@infoseek.co.jp', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 3, 0),
+(37, 'cdubockw@prlog.org', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 1, 0),
+(38, 'gcripwellx@domainmarket.com', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 1, 0),
+(39, 'mholylandy@nydailynews.com', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 1, 0),
+(40, 'vmcgivenz@mtv.com', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 2, 0),
+(41, 'fmarsh10@live.com', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 1, 1),
+(42, 'ghandaside11@storify.com', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 2, 0),
+(43, 'rcrimmins12@phoca.cz', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 1, 0),
+(44, 'dcorona13@paypal.com', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 2, 0),
+(45, 'tmaric14@amazon.com', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 1, 0),
+(46, 'wbroadfield15@godaddy.com', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 1, 0),
+(47, 'wdreghorn16@google.com.hk', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 1, 1),
+(48, 'awallentin17@exblog.jp', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 1, 0),
+(49, 'wleppo18@mysql.com', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 1, 0),
+(50, 'cmolyneaux19@google.com', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 1, 0),
+(51, 'esunnucks1a@japanpost.jp', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 1, 0),
+(52, 'achetham1b@odnoklassniki.ru', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 1, 0),
+(53, 'ctebald1c@prweb.com', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 1, 0),
+(54, 'jhischke1d@lulu.com', '$2a$10$TF2m86tAKCdMZdoOhLcdXOuQfFFD5uaKGZRrEvd4XP9riZzOCuJYu', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -47,6 +106,66 @@ CREATE TABLE `accounts_companies` (
   `company_fk` int(11) NOT NULL,
   `is_admin` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dump dei dati per la tabella `accounts_companies`
+--
+
+INSERT INTO `accounts_companies` (`id`, `account_fk`, `company_fk`, `is_admin`) VALUES
+(1, 4, 20, 1),
+(2, 21, 160, 0),
+(3, 42, 592, 0),
+(4, 9, 222, 0),
+(5, 47, 552, 0),
+(6, 44, 450, 1),
+(7, 16, 792, 0),
+(8, 9, 459, 0),
+(9, 46, 50, 0),
+(10, 20, 99, 0),
+(11, 39, 563, 0),
+(12, 9, 339, 0),
+(13, 20, 322, 0),
+(14, 53, 556, 0),
+(15, 45, 522, 0),
+(16, 35, 565, 0),
+(17, 16, 363, 0),
+(18, 46, 357, 0),
+(19, 34, 342, 1),
+(20, 10, 186, 0),
+(21, 19, 171, 0),
+(22, 53, 254, 0),
+(23, 35, 273, 1),
+(24, 32, 585, 1),
+(25, 25, 23, 0),
+(26, 5, 389, 0),
+(27, 47, 473, 0),
+(28, 16, 385, 0),
+(29, 13, 111, 1),
+(30, 25, 189, 0),
+(31, 28, 793, 0),
+(32, 39, 273, 0),
+(33, 40, 434, 1),
+(34, 4, 504, 0),
+(35, 54, 105, 0),
+(36, 28, 340, 0),
+(37, 15, 312, 1),
+(38, 7, 305, 1),
+(39, 42, 218, 0),
+(40, 48, 401, 0),
+(41, 45, 474, 0),
+(42, 47, 633, 0),
+(43, 33, 280, 1),
+(44, 16, 464, 0),
+(45, 23, 255, 0),
+(46, 23, 606, 0),
+(47, 42, 611, 0),
+(48, 2, 238, 0),
+(49, 35, 704, 0),
+(50, 45, 94, 0),
+(51, 46, 633, 0),
+(52, 17, 471, 0),
+(53, 18, 342, 0),
+(54, 42, 100, 1);
 
 -- --------------------------------------------------------
 
@@ -10377,12 +10496,121 @@ CREATE TABLE `requests` (
   `id` int(11) NOT NULL,
   `request_type` char(1) NOT NULL,
   `request_details` varchar(1000) NOT NULL,
-  `entity_type` tinyint(1) NOT NULL,
+  `entity_type` tinyint(1) NOT NULL COMMENT '0 = employee, 1 = company',
   `company_fk` int(11) NOT NULL,
   `is_approved` tinyint(1) NOT NULL DEFAULT 0,
   `operation_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `operation_by` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dump dei dati per la tabella `requests`
+--
+
+INSERT INTO `requests` (`id`, `request_type`, `request_details`, `entity_type`, `company_fk`, `is_approved`, `operation_date`, `operation_by`) VALUES
+(1, 'u', 'changed tizio name', 0, 20, 0, '2025-04-22 14:57:35', 'pippo'),
+(2, 'u', 'changed name of company pluto', 1, 25, 0, '2025-04-23 08:17:08', 'marco aurelio il magnifico'),
+(3, 'c', 'created user gianfranco', 0, 450, 0, '2025-04-23 08:19:23', 'pippo baudo'),
+(4, 'd', 'Newborn esophageal reflux', 0, 495, 0, '2025-04-22 20:05:15', 'Wendel Lomaz'),
+(5, 'd', 'Unspecified superficial injury of unspecified ear', 1, 703, 0, '2024-08-16 10:09:52', 'Karalynn Thamelt'),
+(6, 'c', 'Ichthyosis vulgaris', 1, 156, 0, '2024-06-15 08:32:22', 'Bernadette Spens'),
+(7, 'd', 'War op w indirect blast effect of nuclear weapon, civilian', 1, 477, 0, '2024-09-15 14:32:21', 'Pat Posselwhite'),
+(8, 'c', 'Striking against or struck by other automobile airbag', 0, 608, 0, '2024-02-03 14:15:23', 'Eachelle Gibbin'),
+(9, 'u', 'Displaced comminuted fracture of shaft of radius, left arm', 1, 220, 0, '2024-02-09 21:04:58', 'Ginnie Folli'),
+(10, 'c', 'Unspecified open wound of scrotum and testes, sequela', 1, 254, 0, '2024-03-08 19:41:09', 'Galven Hauck'),
+(11, 'c', 'Tetracyclines', 1, 491, 0, '2024-01-13 05:01:02', 'Maxy Bygraves'),
+(12, 'c', 'Poisoning by iminostilbenes, undetermined, initial encounter', 0, 488, 0, '2024-10-28 23:26:02', 'Meaghan Currall'),
+(13, 'u', 'Traum hemor l cereb w LOC >24 hr w/o ret consc w surv, sqla', 1, 49, 0, '2025-02-20 06:34:12', 'Wilton Loton'),
+(14, 'c', 'Nondisplaced fracture of anterior process of right calcaneus', 1, 280, 0, '2024-04-25 04:26:17', 'Bernadine Darrell'),
+(15, 'd', 'Fracture of unspecified carpal bone', 1, 326, 0, '2024-07-20 20:18:32', 'Eamon Guilloneau'),
+(16, 'u', 'Strain musc/tend peroneal grp at low leg lev, left leg, init', 1, 218, 0, '2025-04-23 11:04:25', 'Amory Esposito'),
+(17, 'c', 'Pnctr of abd wall w/o fb, r low q w/o penet perit cav, init', 0, 596, 0, '2024-12-15 11:24:32', 'Bartholomeo Charrington'),
+(18, 'u', 'Machinery accident on board fishing boat', 0, 337, 0, '2024-07-12 19:18:23', 'Morton Casini'),
+(19, 'c', 'Carnitine deficiency due to inborn errors of metabolism', 1, 711, 0, '2024-04-24 09:37:51', 'Hamel Bernadot'),
+(20, 'd', 'External constriction of right shoulder, sequela', 1, 385, 0, '2024-03-31 13:51:39', 'Stevena Verdy'),
+(21, 'u', 'Adverse effect of antigonadtr/antiestr/antiandrg, NEC, subs', 0, 4, 0, '2024-01-07 04:56:47', 'Fidelia Duetschens'),
+(22, 'c', 'Degeneration of macula and posterior pole', 1, 264, 0, '2024-04-01 18:12:26', 'Carny Toller'),
+(23, 'd', 'Displ oblique fx shaft of l fibula, 7thE', 1, 770, 0, '2024-05-19 10:21:41', 'Aldridge D\'Ambrogio'),
+(24, 'u', 'Cardiac arrest due to anesth during preg, third trimester', 0, 169, 0, '2024-10-18 05:37:49', 'Renie Jonke'),
+(25, 'd', 'Decreased fetal movements, third trimester, fetus 1', 0, 174, 0, '2025-02-25 08:55:06', 'Bobbee Charrett'),
+(26, 'c', 'Laceration w/o fb of unsp great toe w/o damage to nail', 1, 155, 0, '2024-08-06 09:49:58', 'Verile Roughley'),
+(27, 'd', 'Corros unsp degree of unsp single finger except thumb, subs', 0, 448, 0, '2024-07-10 16:22:04', 'Petronella Dismore'),
+(28, 'd', 'Myositis', 1, 288, 0, '2024-09-22 10:44:33', 'Brantley Ceresa'),
+(29, 'c', 'Burn first deg mult left fngr (nail), not inc thumb, sequela', 1, 660, 0, '2024-03-15 09:50:04', 'Lucine Pagelsen'),
+(30, 'c', 'Toxic effect of rattlesnake venom, self-harm, subs', 0, 157, 0, '2024-08-29 14:34:35', 'Fowler Lehrer'),
+(31, 'c', 'Disp fx of base of nk of unsp femr, 7thK', 1, 399, 0, '2024-03-17 11:01:17', 'Ninetta Davidovits'),
+(32, 'c', 'Leakage of indwelling urethral catheter, subs', 1, 634, 0, '2024-03-17 09:30:08', 'Sheelah Talman'),
+(33, 'u', 'Oth fx upper end r ulna, subs for opn fx type I/2 w nonunion', 0, 575, 0, '2024-05-25 14:08:44', 'Erv Trigg'),
+(34, 'c', 'Unspecified open-angle glaucoma, indeterminate stage', 0, 618, 0, '2024-06-16 21:36:17', 'Muffin McKean'),
+(35, 'd', 'Displaced oblique fracture of shaft of right fibula', 0, 337, 0, '2024-02-21 09:40:09', 'Beitris Bertomier'),
+(36, 'c', 'Legal intervnt w injury by dynamite, suspect inj, sequela', 0, 57, 0, '2024-09-27 00:24:53', 'Corrianne Killford'),
+(37, 'u', 'Legal intervnt w oth blunt obj, law enforc offl inj, sequela', 1, 12, 0, '2024-05-17 02:04:39', 'Stavros Bly'),
+(38, 'u', 'Sltr-haris Type IV physl fx upr end unsp tibia, 7thP', 0, 480, 0, '2024-08-01 00:37:01', 'Woodie Lavers'),
+(39, 'd', 'Private commercial establishments as place', 0, 2, 0, '2025-04-13 18:32:48', 'Rosabella Blampey'),
+(40, 'u', 'Pnctr w fb of abd wall, right lower q w penet perit cav', 1, 634, 0, '2025-02-06 15:01:30', 'Wendy Gaskamp'),
+(41, 'c', 'Toxic effect of unsp snake venom, accidental, sequela', 1, 440, 0, '2024-11-11 04:56:28', 'Noelyn Lieber'),
+(42, 'u', 'Toxic effect of benzene, undetermined, sequela', 1, 71, 0, '2024-03-29 18:05:47', 'Davita Albrook'),
+(43, 'u', 'Oral mucositis (ulcerative) due to radiation', 1, 702, 0, '2025-02-05 04:06:29', 'Lorie Faudrie'),
+(44, 'd', 'Unsp injury of musc/fasc/tend triceps, right arm, sequela', 0, 103, 0, '2025-02-18 08:29:06', 'Morly Shord'),
+(45, 'c', 'Encounter for oth general cnsl and advice on contraception', 1, 574, 0, '2024-11-19 15:03:22', 'Emily Le Provest'),
+(46, 'd', 'Toxic effect of unsp corrosive substance, assault, subs', 0, 119, 0, '2024-06-05 18:59:09', 'Alvira Winch'),
+(47, 'd', 'Sprain of metatarsophalangeal joint of left lesser toe(s)', 0, 564, 0, '2024-06-03 16:39:49', 'Salaidh Baldrick'),
+(48, 'u', 'Incomplete atypical femoral fracture, unsp leg, sequela', 0, 631, 0, '2025-02-26 22:47:50', 'Farah Lillgard'),
+(49, 'c', 'Spontaneous rupture of extensor tendons, left lower leg', 1, 631, 0, '2024-10-05 11:26:14', 'Cosimo Collinwood'),
+(50, 'u', 'Puncture wound with foreign body, unspecified knee', 1, 770, 0, '2024-08-05 04:20:23', 'Mela Joyes'),
+(51, 'd', 'Disp fx of post wl of unsp acetab, subs for fx w routn heal', 1, 173, 0, '2024-01-09 23:34:55', 'Irene Steels'),
+(52, 'c', 'Poisoning by alpha-adrenoreceptor antagonists, self-harm', 1, 59, 0, '2025-01-17 18:09:03', 'Kerby Hansman'),
+(53, 'c', 'Sltr-haris Type I physl fx upr end r fibula, 7thP', 1, 81, 0, '2024-10-15 19:45:48', 'Bobbee Jewitt'),
+(54, 'u', 'Presence of cardiac and vascular implants and grafts', 0, 274, 0, '2025-04-07 00:56:21', 'Stanislaus Grout'),
+(55, 'd', 'Acc pnctr & lac of a dgstv sys org during oth procedure', 0, 21, 0, '2024-01-13 14:21:38', 'Sanders Petr'),
+(56, 'u', 'Abrasion, unspecified lower leg', 1, 549, 0, '2024-10-06 13:11:59', 'Rosamund Copins'),
+(57, 'u', 'Opioid dependence, uncomplicated', 1, 758, 0, '2024-10-26 01:30:25', 'Vladimir Gibbons'),
+(58, 'c', 'Aural myiasis', 0, 599, 0, '2024-08-24 09:37:33', 'Esteban Lindner'),
+(59, 'c', 'Nondisp fx of med condyle of unsp tibia, 7thK', 1, 412, 0, '2025-02-12 13:02:52', 'Bo Peattie'),
+(60, 'c', 'Nondisp oblique fx shaft of humer, l arm, 7thK', 0, 350, 0, '2025-03-18 04:33:59', 'Mackenzie O\'Noulane'),
+(61, 'u', 'External constriction, unspecified lower leg, subs encntr', 1, 698, 0, '2024-10-13 13:26:53', 'Saw Castelluzzi'),
+(62, 'c', 'Endo, nutritional and metab diseases comp preg, second tri', 1, 742, 0, '2024-02-23 12:50:25', 'Geneva Tebbett'),
+(63, 'c', 'Poisn by oth prim sys and hematolog agents, assault, subs', 0, 312, 0, '2024-04-17 01:48:11', 'Kristofer Sterrick'),
+(64, 'u', 'High school as the place of occurrence of the external cause', 1, 633, 0, '2024-10-24 13:21:52', 'Isaac Argont'),
+(65, 'd', 'Nicotine dependence, unsp, w oth nicotine-induced disorders', 1, 499, 0, '2024-09-23 13:38:33', 'Tad Mityushin'),
+(66, 'd', 'Malignant neoplasm complicating pregnancy, second trimester', 0, 712, 0, '2024-03-04 16:15:11', 'Gilberta Swinburn'),
+(67, 'd', 'Enteropathic arthropathies, shoulder', 0, 50, 0, '2025-04-14 12:47:12', 'Bebe Melwall'),
+(68, 'c', 'Superficial foreign body of penis', 1, 397, 0, '2024-05-26 05:12:43', 'Birgitta Amori'),
+(69, 'u', 'Calculus of ureter', 0, 406, 0, '2025-02-16 09:26:51', 'Augustin Aldcorn'),
+(70, 'd', 'Posterior sublux of proximal end of tibia, right knee, subs', 1, 277, 0, '2024-07-06 18:41:51', 'Meara Murfett'),
+(71, 'd', 'Pain in unspecified joint', 0, 116, 0, '2024-07-09 07:28:17', 'Thorvald Cavalier'),
+(72, 'd', 'Disp fx of med cuneiform of unsp ft, subs for fx w malunion', 0, 96, 0, '2024-02-25 14:47:32', 'Blancha Biggen'),
+(73, 'c', 'Disp fx of unsp tibial tuberosity, 7thK', 1, 639, 0, '2024-01-20 23:14:45', 'Otis Fannin'),
+(74, 'c', 'Unsp open wound of left great toe w damage to nail, init', 1, 592, 0, '2025-04-23 11:04:25', 'Danyelle Burtt'),
+(75, 'd', 'Corrosion of unsp degree of other site of trunk, sequela', 1, 234, 0, '2024-08-20 00:25:05', 'Sylvan Melloi'),
+(76, 'c', 'Severely displaced Zone III fracture of sacrum, sequela', 1, 656, 0, '2024-03-02 06:49:12', 'Marna Tomankiewicz'),
+(77, 'u', 'Nondisp fx of proximal phalanx of right great toe, sequela', 0, 311, 0, '2025-04-03 06:01:10', 'Ilario Looker'),
+(78, 'd', 'Foreign body in ear, unspecified ear, subsequent encounter', 1, 123, 0, '2025-03-10 16:14:14', 'Donni Leeburn'),
+(79, 'u', 'Nondisp fx of lateral malleolus of l fibula, 7thH', 0, 83, 0, '2024-11-25 01:57:55', 'Patrizio Filon'),
+(80, 'd', 'Flatulence and related conditions', 1, 208, 0, '2024-04-21 22:44:30', 'Fanya Lorans'),
+(81, 'd', 'Accidental drown while in swimming-pool, subs', 1, 661, 0, '2024-03-05 22:22:20', 'Reilly Ridulfo'),
+(82, 'c', 'Chronic postrheumatic arthropathy [Jaccoud], right wrist', 1, 752, 0, '2024-12-09 14:55:00', 'Kalindi Rose'),
+(83, 'd', 'Gastritis, unspecified, with bleeding', 1, 141, 0, '2025-03-21 04:43:33', 'Rodd L\'Archer'),
+(84, 'd', 'Person injured wh brd/alit from amblnc/fire eng, subs', 0, 648, 0, '2024-06-04 16:53:12', 'Say Davies'),
+(85, 'u', 'Contusion of anus, subsequent encounter', 0, 533, 0, '2024-04-25 12:37:00', 'Cathryn Escot'),
+(86, 'd', 'Sprain of metacarpophalangeal joint of other finger, sequela', 1, 603, 0, '2024-04-15 07:16:49', 'Elaine O\'Heneghan'),
+(87, 'u', 'Labor and delivery complicated by cord complication, unsp', 0, 435, 0, '2025-01-27 04:31:14', 'Nani Mosby'),
+(88, 'd', 'Corneal staphyloma', 0, 326, 0, '2024-08-27 22:46:53', 'Gerianne Musk'),
+(89, 'd', 'Pain in hand and fingers', 1, 476, 0, '2024-07-08 11:43:52', 'Royall Frensch'),
+(90, 'c', 'Unsp injury of radial artery at wrs/hnd lv of unsp arm, subs', 1, 281, 0, '2024-04-15 00:06:15', 'Eileen Grigor'),
+(91, 'u', 'Kaschin-Beck disease, elbow', 1, 511, 0, '2024-11-20 01:37:49', 'Rania Rosellini'),
+(92, 'd', 'Gambling and betting', 0, 432, 0, '2024-11-07 13:05:12', 'Theresina Tunna'),
+(93, 'u', 'Nondisp oblique fx shaft of unsp fibula, 7thG', 0, 631, 0, '2024-04-04 17:21:09', 'Lois Knowlden'),
+(94, 'u', 'Poisoning by emetics, assault, initial encounter', 0, 194, 0, '2024-07-20 18:42:58', 'Ninnetta Bradburn'),
+(95, 'u', 'Labor and del comp by cord around neck, w comprsn, fetus 1', 1, 312, 0, '2024-12-15 11:43:30', 'Glenda Maric'),
+(96, 'd', 'Injury of medial plantar nerve, unspecified leg, sequela', 0, 309, 0, '2024-04-09 00:41:39', 'Cleavland Mc Ilwrick'),
+(97, 'u', 'Episodic tension-type headache, not intractable', 0, 412, 0, '2025-01-07 12:16:54', 'Briny Gladebeck'),
+(98, 'c', 'Nondisplaced spiral fracture of shaft of humerus, right arm', 0, 750, 0, '2025-03-27 06:52:56', 'Sarine Rounsefell'),
+(99, 'u', 'Oth fx upr & low end r fibula, 7thM', 0, 100, 0, '2025-04-23 11:04:25', 'Catlin Addey'),
+(100, 'u', 'Unsp comp of fb acc left in body fol injection or immuniz', 0, 683, 0, '2025-04-06 21:07:10', 'Clotilda MacGrath'),
+(101, 'u', 'Dislocation of jaw, unspecified side', 0, 243, 0, '2024-11-02 17:19:51', 'Fidelity Selwyne'),
+(102, 'c', 'Other fracture of upper end of humerus', 0, 12, 0, '2025-03-20 09:50:31', 'Rasia Laughton'),
+(103, 'd', 'Necrosis of pulp', 0, 189, 0, '2024-09-02 20:00:34', 'Rora Andrassy');
 
 -- --------------------------------------------------------
 
@@ -10394,6 +10622,30 @@ CREATE TABLE `roles` (
   `id` int(11) NOT NULL,
   `name` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dump dei dati per la tabella `roles`
+--
+
+INSERT INTO `roles` (`id`, `name`) VALUES
+(1, 'ROLE_USER'),
+(2, 'ROLE_COMPANY_ADMIN'),
+(3, 'ROLE_SYSADMIN');
+
+-- --------------------------------------------------------
+
+--
+-- Struttura stand-in per le viste `v_accounts_companies`
+-- (Vedi sotto per la vista effettiva)
+--
+CREATE TABLE `v_accounts_companies` (
+`account_id` int(11)
+,`account_mail` varchar(300)
+,`account_role` varchar(50)
+,`is_admin` varchar(5)
+,`company_id` int(11)
+,`company_name` varchar(255)
+);
 
 -- --------------------------------------------------------
 
@@ -10419,7 +10671,26 @@ CREATE TABLE `v_companies_hierarchies` (
 -- (Vedi sotto per la vista effettiva)
 --
 CREATE TABLE `v_requests` (
+`id` int(11)
+,`request_type` varchar(6)
+,`request_details` varchar(1000)
+,`entity_type` varchar(9)
+,`company_id` int(11)
+,`company_name` varchar(255)
+,`is_request_approved` varchar(5)
+,`operation_date` timestamp
+,`operation_by` varchar(255)
+,`account_id` int(11)
 );
+
+-- --------------------------------------------------------
+
+--
+-- Struttura per vista `v_accounts_companies`
+--
+DROP TABLE IF EXISTS `v_accounts_companies`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_accounts_companies`  AS SELECT `accounts`.`id` AS `account_id`, `accounts`.`mail` AS `account_mail`, `roles`.`name` AS `account_role`, CASE WHEN `accounts_companies`.`is_admin` = 0 THEN 'FALSE' WHEN `accounts_companies`.`is_admin` = 1 THEN 'TRUE' END AS `is_admin`, `companies`.`id` AS `company_id`, `companies`.`name` AS `company_name` FROM (((`accounts` left join `accounts_companies` on(`accounts_companies`.`account_fk` = `accounts`.`id`)) left join `companies` on(`companies`.`id` = `accounts_companies`.`company_fk`)) left join `roles` on(`roles`.`id` = `accounts`.`role_fk`)) ;
 
 -- --------------------------------------------------------
 
@@ -10437,7 +10708,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_requests`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_requests`  AS SELECT `requests`.`id` AS `id`, `requests`.`request_type` AS `request_type`, `requests`.`request_details` AS `request_details`, `requests`.`entity_type` AS `entity_type`, `companies`.`id` AS `company_id`, `companies`.`name` AS `company_name`, `requests`.`is_approved` AS `is_approved`, `requests`.`operation_date` AS `operation_date`, `requests`.`operation_by` AS `operation_by` FROM (((`accounts_companies` left join `accounts` on(`accounts`.`id` = `accounts_companies`.`account_fk`)) left join `companies` on(`companies`.`id` = `accounts_companies`.`company_fk`)) left join `requests` on(`requests`.`company_fk` = `companies`.`id`)) WHERE `accounts_companies`.`is_admin` = 1 OR `accounts`.`account_role` = 2 ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_requests`  AS SELECT `requests`.`id` AS `id`, CASE WHEN `requests`.`request_type` = 'c' THEN 'CREATE' WHEN `requests`.`request_type` = 'u' THEN 'UPDATE' WHEN `requests`.`request_type` = 'd' THEN 'DELETE' END AS `request_type`, `requests`.`request_details` AS `request_details`, CASE WHEN `requests`.`entity_type` = 0 THEN 'EMPLOYEES' WHEN `requests`.`entity_type` = 1 THEN 'COMPANIES' END AS `entity_type`, `companies`.`id` AS `company_id`, `companies`.`name` AS `company_name`, CASE WHEN `requests`.`is_approved` = 0 THEN 'FALSE' WHEN `requests`.`is_approved` = 1 THEN 'TRUE' END AS `is_request_approved`, `requests`.`operation_date` AS `operation_date`, `requests`.`operation_by` AS `operation_by`, `accounts`.`id` AS `account_id` FROM (((`requests` left join `companies` on(`companies`.`id` = `requests`.`company_fk`)) left join `accounts_companies` on(`accounts_companies`.`company_fk` = `companies`.`id`)) left join `accounts` on(`accounts`.`id` = `accounts_companies`.`account_fk`)) ;
 
 --
 -- Indici per le tabelle scaricate
@@ -10522,13 +10793,13 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT per la tabella `accounts`
 --
 ALTER TABLE `accounts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 
 --
 -- AUTO_INCREMENT per la tabella `accounts_companies`
 --
 ALTER TABLE `accounts_companies`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 
 --
 -- AUTO_INCREMENT per la tabella `cities`
@@ -10570,13 +10841,13 @@ ALTER TABLE `history`
 -- AUTO_INCREMENT per la tabella `requests`
 --
 ALTER TABLE `requests`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=104;
 
 --
 -- AUTO_INCREMENT per la tabella `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Limiti per le tabelle scaricate
@@ -10631,7 +10902,7 @@ ALTER TABLE `history`
 -- Limiti per la tabella `requests`
 --
 ALTER TABLE `requests`
-  ADD CONSTRAINT `fk_requests_account` FOREIGN KEY (`company_fk`) REFERENCES `accounts` (`id`);
+  ADD CONSTRAINT `fk_requests_account` FOREIGN KEY (`company_fk`) REFERENCES `companies` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
