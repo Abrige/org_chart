@@ -55,17 +55,19 @@ public class AdminRestController {
     @GetMapping(value = "/requests")
     public ResponseEntity<Object> getRequests() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        // verifica che non sia un utente anonimo, ma un utente loggato sul sito provvisto di token
+        // verifica che non sia un utente anonimo, ma un utente loggato sul sito, quindi provvisto di token
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             String currentUserName = authentication.getName();
             Role userRole = this.customUserDetailsService.loadRoleByUsername(currentUserName);
-            if(userRole.getName().equals("ROLE_SYSADMIN")) {
-                return ResponseEntity.status(HttpStatus.OK).body(requestRepository.findByOrderByOperationDateDesc());
+            Integer userId = this.customUserDetailsService.loadIdByUsername(currentUserName);
+            // se l'utente è loggato ma non hai il ruolo giusto allora non può accedere
+            if(userRole.getName().equals("ROLE_USER")) {
+                return ResponseEntity.status(403).body("Access Denied");
             }
-            if(userRole.getName().equals("ROLE_COMPANY_ADMIN")) {
-                Integer accountId = this.customUserDetailsService.loadIdByUsername(currentUserName);
-                return ResponseEntity.status(HttpStatus.OK).body(requestRepository.findByAccountIdOrderByOperationDateDesc(accountId));
-            }
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(requestRepository.findRequestsByAccountAndRole(userRole.getId(), userId)); // con questa
+            // query in base al tuo ruolo e id dell'account, ti ritorna le richieste in base al tuo ruolo
         }
         return ResponseEntity.status(403).body("Access Denied");
     }

@@ -21,12 +21,6 @@ public class Request {
     private LocalDateTime operationDate; // viene mappato in automatico da hibernate prendendo il timestamp dal database
     private String operationBy;
     private Integer accountId;
-    // serve per mostrare i dati dal join della tabella many to many che abbiamo creato sul database
-    @ManyToMany
-    @JoinTable(name = "accounts_requests",
-            joinColumns = @JoinColumn(name = "account_fk"),
-            inverseJoinColumns = @JoinColumn(name = "request_fk"))
-    private Set<Request> request = new HashSet<>();
 
     public Integer getId() {
         return id;
@@ -100,11 +94,4 @@ public class Request {
         this.accountId = accountId;
     }
 
-    public Set<Request> getRequest() {
-        return request;
-    }
-
-    public void setRequest(Set<Request> request) {
-        this.request = request;
-    }
 }
