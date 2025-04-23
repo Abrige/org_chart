@@ -25,8 +25,9 @@ public class JwtUtils {
     @Value("${jwt.expirationMs}")
     private int jwtExpirationMs;
 
+    // decodifica da base64 la chiave segreta e la converte in un oggetto SecretKey(di spring security)
     private SecretKey getSigningKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(secret);
+        byte[] keyBytes = Decoders.BASE64.decode(secret); // secret sarebbe il cosiddetto "salt"
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
@@ -39,12 +40,12 @@ public class JwtUtils {
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
                 .signWith(getSigningKey())
-                .compact();
+                .compact(); // compattare il token in una stringa unica, invece di avere header, body e firma
     }
 
     // dato un token estrae l'username dal payload
     public String getUsernameFromToken(String token) {
-        return Jwts.parser()
+        return Jwts.parser() // il parser prende un testo ed estrae dei dati
                 .verifyWith(getSigningKey())
                 .build()
                 .parseSignedClaims(token)
