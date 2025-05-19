@@ -1,11 +1,15 @@
-HELP.md
+# ========================
+# Build System (Gradle)
+# ========================
 .gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-### STS ###
+# ========================
+# STS (Spring Tool Suite)
+# ========================
 .apt_generated
 .classpath
 .factorypath
@@ -17,8 +21,10 @@ bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
 
-### IntelliJ IDEA ###
-.idea
+# ========================
+# IntelliJ IDEA
+# ========================
+.idea/
 *.iws
 *.iml
 *.ipr
@@ -26,12 +32,46 @@ out/
 !**/src/main/**/out/
 !**/src/test/**/out/
 
-### NetBeans ###
+# ========================
+# NetBeans
+# ========================
 /nbproject/private/
 /nbbuild/
 /dist/
 /nbdist/
 /.nb-gradle/
 
-### VS Code ###
+# ========================
+# VS Code
+# ========================
 .vscode/
+!.vscode/extensions.json
+
+# ========================
+# Logs
+# ========================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ========================
+# Node.js / JS Build
+# ========================
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# ========================
+# Editor backup and misc
+# ========================
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
