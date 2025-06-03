@@ -1,14 +1,14 @@
 package it.telematica.org_chart.controller;
-
+import it.telematica.org_chart.dto.Pagination;
 import it.telematica.org_chart.model.*;
 import it.telematica.org_chart.repository.*;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+//@CrossOrigin("*") // permette la chiamata da altra porta
 @RequestMapping(value = "/home")
 @RestController
 public class HomeRestController {
@@ -36,6 +36,13 @@ public class HomeRestController {
     @GetMapping(value = "/companies")
     public List<Company> getCompanies() {
         return companyRepository.findByOrderByNameAsc();
+    }
+
+    // ritorna tutte le aziende in base alla paginazione
+    @PostMapping(value = "/companies")
+    public Page<Company> getCompaniesPage(@RequestBody Pagination pagination) {
+        PageRequest pageRequest = PageRequest.of(pagination.getPage(), pagination.getPageSize());
+        return companyRepository.findAll(pageRequest);
     }
 
     // ritorna tutti i dipendenti in base all'azienda selezionata
