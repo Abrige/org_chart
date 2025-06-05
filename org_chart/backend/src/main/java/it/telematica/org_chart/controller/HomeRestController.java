@@ -1,16 +1,20 @@
 package it.telematica.org_chart.controller;
+import it.telematica.org_chart.dto.CompanyDTO;
 import it.telematica.org_chart.dto.EmployeeDTO;
-import it.telematica.org_chart.dto.Pagination;
+import it.telematica.org_chart.dto.PaginationDTO;
 import it.telematica.org_chart.model.*;
 import it.telematica.org_chart.repository.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 //@CrossOrigin("*") // permette la chiamata da altra porta
 @RequestMapping(value = "/home")
@@ -46,8 +50,8 @@ public class HomeRestController {
 
     // ritorna tutte le aziende in base alla paginazione
     @PostMapping(value = "/companies")
-    public Page<Company> getCompaniesPage(@RequestBody Pagination pagination) {
-        PageRequest pageRequest = PageRequest.of(pagination.getPage(), pagination.getPageSize());
+    public Page<Company> getCompaniesPage(@RequestBody PaginationDTO pagination) {
+        PageRequest pageRequest = PageRequest.of(pagination.page(), pagination.pageSize());
         return companyRepository.findAll(pageRequest);
     }
 
@@ -99,21 +103,56 @@ public class HomeRestController {
         return List.of();
     }
 
+    // edit dei campi dell'employee
     @PostMapping(value = "/employee")
-    public void editEmployeeData(@RequestBody EmployeeDTO employee){
-        Employee e = new Employee();
+    public void editEmployeeData(@RequestBody EmployeeDTO employeeDTO) {
+        Employee existingEmployee = employeeRepository.findById(employeeDTO.id())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Employee not found"));
 
-        e.setId(employee.id());
-        e.setFirst_name(employee.first_name());
-        e.setLast_name(employee.last_name());
-        e.setBirthdate(parseDate(employee.date()));
-        e.setSex(employee.sex());
-        e.setCity(citiesRepository.findById(employee.city_fk()).orElse(null));
-        e.setCompany(companyRepository.findById(employee.company_fk()).orElse(null));
-
-        employeeRepository.save(e);
+        if (employeeDTO.first_name() != null) {
+            existingEmployee.setFirst_name(employeeDTO.first_name());
+        }
+        if (employeeDTO.last_name() != null) {
+            existingEmployee.setLast_name(employeeDTO.last_name());
+        }
+        if (employeeDTO.date() != null) {
+            existingEmployee.setBirthdate(parseDate(employeeDTO.date()));
+        }
+        if (employeeDTO.sex() != null) {
+            existingEmployee.setSex(employeeDTO.sex());
+        }
+        if (employeeDTO.city_fk() != null) {
+            existingEmployee.setCity(citiesRepository.findById(employeeDTO.city_fk()).orElse(null));
+        }
+        if (employeeDTO.company_fk() != null) {
+            existingEmployee.setCompany(companyRepository.findById(employeeDTO.company_fk()).orElse(null));
+        }
+        employeeRepository.save(existingEmployee);
     }
 
+    // edit dei campi dell'azienda
+    @PostMapping(value = "/company")
+    public void editCompanyData(@RequestBody CompanyDTO companyDTO) {
+        Company existingCompany = companyRepository.findById(companyDTO.id())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Company not found"));
+
+        if (companyDTO.name() != null) {
+            existingCompany.setName(companyDTO.name());
+        }
+        if (companyDTO.fiscalCode() != null) {
+            existingCompany.setFiscalCode(companyDTO.fiscalCode());
+        }
+        if (companyDTO.city_fk() != null) {
+            existingCompany.setCity(citiesRepository.findById(companyDTO.city_fk()).orElse(null));
+        }
+        if (companyDTO.logoUrl() != null) {
+            existingCompany.setLogoUrl(companyDTO.logoUrl());
+        }
+
+        companyRepository.save(existingCompany);
+    }
+
+    // funzione di servizio per formattare in modo corretto la data
     private Date parseDate(String dateString){
         try {
             return formatter.parse(dateString);
@@ -121,5 +160,39 @@ public class HomeRestController {
             System.out.println("Error parsing date: " + e.getMessage());
         }
         return null;
+    }
+
+    // add di un nuovo employee nel db
+    @PutMapping("/employee")
+    public ResponseEntity<String> createNewEmployee(@RequestBody EmployeeDTO employeeDTO) {
+        Employee employee = new Employee();
+        // campi obbligatori
+        employee.setFirst_name(employeeDTO.first_name());
+        employee.setLast_name(employeeDTO.last_name());
+        // campi opzionali
+        employee.setBirthdate(employeeDTO.date() != null && !employeeDTO.date().isBlank() ? parseDate(employeeDTO.date()) : null);
+        employee.setSex(employeeDTO.sex() != null ? employeeDTO.sex() : null);
+        employee.setCity(employeeDTO.city_fk() != null ? citiesRepository.findById(employeeDTO.city_fk()).orElse(null) : null);
+        employee.setCompany(employeeDTO.company_fk() != null ? companyRepository.findById(employeeDTO.company_fk()).orElse(null) : null);
+
+        employeeRepository.save(employee);
+
+        return ResponseEntity.ok("Nuovo dipendente inserito con id: " + employee.getId());
+    }
+
+    // add di una nuova azienda nel db
+    @PutMapping
+    public ResponseEntity<String> createOrUpdateCompany(@RequestBody CompanyDTO companyDTO) {
+        Company company = new Company();
+        // campi obbligatori (non nullable)
+        company.setName(companyDTO.name());
+        company.setFiscalCode(companyDTO.fiscalCode());
+        company.setCity(citiesRepository.findById(companyDTO.city_fk()).orElse(null));
+        // campi opzionali (nullable)
+        company.setLogoUrl(companyDTO.logoUrl() != null ? companyDTO.logoUrl() : null);
+
+        companyRepository.save(company);
+
+        return ResponseEntity.ok("Company salvata con successo con id: " + company.getId());
     }
 }

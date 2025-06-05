@@ -12,6 +12,7 @@ import java.util.Set;
 @Table(name = "employees", schema = "org_chart")
 public class Employee {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String first_name;
     private String last_name;

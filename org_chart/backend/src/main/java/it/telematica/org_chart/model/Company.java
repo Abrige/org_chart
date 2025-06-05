@@ -10,6 +10,7 @@ import java.util.Set;
 @Table(name = "companies", schema = "org_chart")
 public class Company {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
     private String fiscalCode;

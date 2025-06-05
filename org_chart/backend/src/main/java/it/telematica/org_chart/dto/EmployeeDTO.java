@@ -1,11 +1,11 @@
 package it.telematica.org_chart.dto;
 
 public record EmployeeDTO(
-        int id,
+        Integer id, // nullable: null se nuovo, valore se update
         String first_name,
         String last_name,
-        String date,
+        String date, // format yyyy-MM-dd
         Character sex,
-        int city_fk,
-        int company_fk
+        Integer city_fk,
+        Integer company_fk
 ) {}
