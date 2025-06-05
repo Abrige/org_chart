@@ -180,8 +180,10 @@ public class HomeRestController {
     }
 
     // add di una nuova azienda nel db
-    @PutMapping
+    @PutMapping("/company")
     public ResponseEntity<String> createOrUpdateCompany(@RequestBody CompanyDTO companyDTO) {
+
+        // TODO fixare, non funziona la chiamata con postman sempre per il valore null di numOfEmployees
         Company company = new Company();
         // campi obbligatori (non nullable)
         company.setName(companyDTO.name());
@@ -189,7 +191,8 @@ public class HomeRestController {
         company.setCity(citiesRepository.findById(companyDTO.city_fk()).orElse(null));
         // campi opzionali (nullable)
         company.setLogoUrl(companyDTO.logoUrl() != null ? companyDTO.logoUrl() : null);
-
+        company.setNumOfEmployees(0);
+        
         companyRepository.save(company);
 
         return ResponseEntity.ok("Company salvata con successo con id: " + company.getId());
