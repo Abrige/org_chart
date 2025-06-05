@@ -1,4 +1,5 @@
 package it.telematica.org_chart.controller;
+import it.telematica.org_chart.dto.EmployeeDTO;
 import it.telematica.org_chart.dto.Pagination;
 import it.telematica.org_chart.model.*;
 import it.telematica.org_chart.repository.*;
@@ -6,12 +7,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 //@CrossOrigin("*") // permette la chiamata da altra porta
 @RequestMapping(value = "/home")
 @RestController
 public class HomeRestController {
+
+    private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
     private CompanyRepository companyRepository;
     private EmployeeRepository employeeRepository;
@@ -93,4 +99,27 @@ public class HomeRestController {
         return List.of();
     }
 
+    @PostMapping(value = "/employee")
+    public void editEmployeeData(@RequestBody EmployeeDTO employee){
+        Employee e = new Employee();
+
+        e.setId(employee.id());
+        e.setFirst_name(employee.first_name());
+        e.setLast_name(employee.last_name());
+        e.setBirthdate(parseDate(employee.date()));
+        e.setSex(employee.sex());
+        e.setCity(citiesRepository.findById(employee.city_fk()).orElse(null));
+        e.setCompany(companyRepository.findById(employee.company_fk()).orElse(null));
+
+        employeeRepository.save(e);
+    }
+
+    private Date parseDate(String dateString){
+        try {
+            return formatter.parse(dateString);
+        } catch (java.text.ParseException e) {
+            System.out.println("Error parsing date: " + e.getMessage());
+        }
+        return null;
+    }
 }
