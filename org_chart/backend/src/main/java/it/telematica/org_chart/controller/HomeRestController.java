@@ -14,7 +14,6 @@ import org.springframework.web.server.ResponseStatusException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 //@CrossOrigin("*") // permette la chiamata da altra porta
 @RequestMapping(value = "/home")
@@ -115,8 +114,8 @@ public class HomeRestController {
         if (employeeDTO.last_name() != null) {
             existingEmployee.setLast_name(employeeDTO.last_name());
         }
-        if (employeeDTO.date() != null) {
-            existingEmployee.setBirthdate(parseDate(employeeDTO.date()));
+        if (employeeDTO.birthdate() != null) {
+            existingEmployee.setBirthdate(parseDate(employeeDTO.birthdate()));
         }
         if (employeeDTO.sex() != null) {
             existingEmployee.setSex(employeeDTO.sex());
@@ -157,7 +156,7 @@ public class HomeRestController {
         try {
             return formatter.parse(dateString);
         } catch (java.text.ParseException e) {
-            System.out.println("Error parsing date: " + e.getMessage());
+            System.out.println("Error parsing birthdate: " + e.getMessage());
         }
         return null;
     }
@@ -170,7 +169,7 @@ public class HomeRestController {
         employee.setFirst_name(employeeDTO.first_name());
         employee.setLast_name(employeeDTO.last_name());
         // campi opzionali
-        employee.setBirthdate(employeeDTO.date() != null && !employeeDTO.date().isBlank() ? parseDate(employeeDTO.date()) : null);
+        employee.setBirthdate(employeeDTO.birthdate() != null && !employeeDTO.birthdate().isBlank() ? parseDate(employeeDTO.birthdate()) : null);
         employee.setSex(employeeDTO.sex() != null ? employeeDTO.sex() : null);
         employee.setCity(employeeDTO.city_fk() != null ? citiesRepository.findById(employeeDTO.city_fk()).orElse(null) : null);
         employee.setCompany(employeeDTO.company_fk() != null ? companyRepository.findById(employeeDTO.company_fk()).orElse(null) : null);
