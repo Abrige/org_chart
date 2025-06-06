@@ -183,7 +183,6 @@ public class HomeRestController {
     @PutMapping("/company")
     public ResponseEntity<String> createOrUpdateCompany(@RequestBody CompanyDTO companyDTO) {
 
-        // TODO fixare, non funziona la chiamata con postman sempre per il valore null di numOfEmployees
         Company company = new Company();
         // campi obbligatori (non nullable)
         company.setName(companyDTO.name());
@@ -191,10 +190,19 @@ public class HomeRestController {
         company.setCity(citiesRepository.findById(companyDTO.city_fk()).orElse(null));
         // campi opzionali (nullable)
         company.setLogoUrl(companyDTO.logoUrl() != null ? companyDTO.logoUrl() : null);
+        // imposta di default il numero di impiegati di un azienda a 0
         company.setNumOfEmployees(0);
         
         companyRepository.save(company);
 
         return ResponseEntity.ok("Company salvata con successo con id: " + company.getId());
     }
+
+    @DeleteMapping("/employee")
+    public ResponseEntity<Void> deleteUser(@PathVariable Integer id) {
+        // TODO gestire eccezioni e assenza di records
+        employeeRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }
