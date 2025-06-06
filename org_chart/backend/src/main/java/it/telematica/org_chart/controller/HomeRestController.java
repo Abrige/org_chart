@@ -14,6 +14,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 //@CrossOrigin("*") // permette la chiamata da altra porta
 @RequestMapping(value = "/home")
@@ -44,14 +45,14 @@ public class HomeRestController {
     // ritorna tutte le aziende
     @GetMapping(value = "/companies")
     public List<Company> getCompanies() {
-        return companyRepository.findByOrderByNameAsc();
+        return companyRepository.findByIsDeletedFalseOrderByNameAsc();
     }
 
     // ritorna tutte le aziende in base alla paginazione
     @PostMapping(value = "/companies")
     public Page<Company> getCompaniesPage(@RequestBody PaginationDTO pagination) {
         PageRequest pageRequest = PageRequest.of(pagination.page(), pagination.pageSize());
-        return companyRepository.findAll(pageRequest);
+        return companyRepository.findByIsDeletedFalseOrderByNameAsc(pageRequest);
     }
 
     // ritorna tutti i dipendenti in base all'azienda selezionata
@@ -60,7 +61,7 @@ public class HomeRestController {
         Company company = companyRepository.findById(id).orElse(null);
 
         if (company != null) {
-            return employeeRepository.findByCompanyOrderByIdAsc(company);
+            return employeeRepository.findByCompanyAndIsDeletedFalseOrderByFirstNameAsc(company);
         }
         return List.of();
     }
@@ -68,7 +69,7 @@ public class HomeRestController {
     // ritorna un dipendete in base al suo id
     @GetMapping(value = "/employee/{id}")
     public Employee getEmployeeById(@PathVariable Integer id) {
-        return employeeRepository.findById(id).orElse(null);
+        return employeeRepository.findByIdAndIsDeletedFalse(id).orElse(null);
     }
 
     // ritorna le gerarchie dei dipendenti in base all'azienda selezionata
@@ -109,7 +110,7 @@ public class HomeRestController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Employee not found"));
 
         if (employeeDTO.first_name() != null) {
-            existingEmployee.setFirst_name(employeeDTO.first_name());
+            existingEmployee.setFirstName(employeeDTO.first_name());
         }
         if (employeeDTO.last_name() != null) {
             existingEmployee.setLast_name(employeeDTO.last_name());
@@ -166,7 +167,7 @@ public class HomeRestController {
     public ResponseEntity<String> createNewEmployee(@RequestBody EmployeeDTO employeeDTO) {
         Employee employee = new Employee();
         // campi obbligatori
-        employee.setFirst_name(employeeDTO.first_name());
+        employee.setFirstName(employeeDTO.first_name());
         employee.setLast_name(employeeDTO.last_name());
         // campi opzionali
         employee.setBirthdate(employeeDTO.birthdate() != null && !employeeDTO.birthdate().isBlank() ? parseDate(employeeDTO.birthdate()) : null);
@@ -198,11 +199,49 @@ public class HomeRestController {
         return ResponseEntity.ok("Company salvata con successo con id: " + company.getId());
     }
 
-    @DeleteMapping("/employee")
-    public ResponseEntity<Void> deleteUser(@PathVariable Integer id) {
-        // TODO gestire eccezioni e assenza di records
-        employeeRepository.deleteById(id);
-        return ResponseEntity.noContent().build();
+    @DeleteMapping("/employee/{id}")
+    public ResponseEntity<Void> deleteEmployee(@PathVariable Integer id) {
+        // Verifica se l'employee esiste
+        Optional<Employee> employeeOpt = employeeRepository.findById(id);
+
+        if (employeeOpt.isEmpty()) {
+            // 404 Not Found se non esiste
+            return ResponseEntity.notFound().build();
+        }
+
+        // imposta il campo deleted dell'employee a true
+        employeeOpt.get().setDeleted(true);
+        employeeOpt.get().setCompany(null);
+        // pusha i dati al db
+        employeeRepository.save(employeeOpt.get());
+
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/company/{id}")
+    public ResponseEntity<Void> deleteCompany(@PathVariable Integer id) {
+        // Verifica se la company esiste
+        Optional<Company> companyOpt = companyRepository.findById(id);
+
+        if (companyOpt.isEmpty()) {
+            // 404 Not Found se non esiste
+            return ResponseEntity.notFound().build();
+        }
+
+        // recupera tutti gli employee per quella azienda
+        List<Employee> employees = employeeRepository.findByCompanyOrderByIdAsc(companyOpt.get());
+
+        // imposta il campo deleted dell'azienda a true
+        companyOpt.get().setDeleted(true);
+        companyRepository.save(companyOpt.get());
+
+        // per ogni utente di quell'azienda imposta il campo deleted a true e a null l'azienda
+        for  (Employee employee : employees) {
+            employee.setCompany(null);
+            employeeRepository.save(employee);
+        }
+
+        return ResponseEntity.ok().build();
     }
 
 }

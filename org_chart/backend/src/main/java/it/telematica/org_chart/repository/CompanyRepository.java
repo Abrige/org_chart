@@ -18,4 +18,10 @@ public interface CompanyRepository extends CrudRepository<Company, Integer> {
     Company findByNameOrderById(String name);
 
     Page<Company> findAll(Pageable pageable);
+
+    // ritorna tutte le aziende che non sono cancellate
+    List<Company> findByIsDeletedFalseOrderByNameAsc();
+
+    // ritorna la paginazione di tutte le aziende che non sono cancellate
+    Page<Company> findByIsDeletedFalseOrderByNameAsc(Pageable pageable);
 }
