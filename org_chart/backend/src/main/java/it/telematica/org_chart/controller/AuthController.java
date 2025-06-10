@@ -3,6 +3,9 @@ package it.telematica.org_chart.controller;
 import it.telematica.org_chart.config.JwtUtils;
 import it.telematica.org_chart.dto.AuthRequestDTO;
 import it.telematica.org_chart.dto.AuthResponseDTO;
+import it.telematica.org_chart.model.Account;
+import it.telematica.org_chart.repository.AccountRepository;
+import it.telematica.org_chart.repository.RoleRepository;
 import it.telematica.org_chart.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,20 +17,26 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
+
 
 @RestController
 public class AuthController {
 
+    private final AccountRepository accountRepository;
+    private final RoleRepository roleRepository;
     private AuthenticationManager authenticationManager;
     private JwtUtils jwtUtils;
     private UserService userService;
 
     public AuthController(AuthenticationManager authenticationManager,
                           JwtUtils jwtUtils,
-                          UserService userService) {
+                          UserService userService, AccountRepository accountRepository, RoleRepository roleRepository) {
         this.authenticationManager = authenticationManager;
         this.jwtUtils = jwtUtils;
         this.userService = userService;
+        this.accountRepository = accountRepository;
+        this.roleRepository = roleRepository;
     }
 
     @PostMapping(value = "/login")
@@ -35,7 +44,13 @@ public class AuthController {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(authRequest.mail(), authRequest.password())
         );
-
+        Optional<Account> account = accountRepository.findByMail(authRequest.mail());
+        /*
+        // se il ruolo dell'accunt in questione è admin
+        if(account.get().getRole().equals(roleRepository.findByName("ROLE_ADMIN"))){
+            // TODO aggiungere della logica per mandare il ruolo
+        }
+        */
         // genera il token JWT
         String token = jwtUtils.generateToken((UserDetails) authentication.getPrincipal());
 
