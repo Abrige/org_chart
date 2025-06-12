@@ -1,32 +1,34 @@
 package it.telematica.org_chart.model;
 
+import it.telematica.org_chart.converter.ApprovalStatusConverter;
+import it.telematica.org_chart.enums.ApprovalStatus;
 import jakarta.persistence.*;
-import org.hibernate.annotations.Immutable;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
-@Immutable
-@Table(name = "v_requests", schema = "org_chart")
+@Table(name = "requests", schema = "org_chart")
 public class Request {
     @Id
-    private Integer id;
+    private int id;
     private String requestType;
-    private String entityType;
-    private Integer companyId;
-    private String companyName;
-    private String isRequestApproved;
-    private LocalDateTime operationDate; // viene mappato in automatico da hibernate prendendo il timestamp dal database
+    private String requestDetails;
+    @Column(columnDefinition = "TINYINT(1)", name = "entity_type")
+    private Integer entityType;
+    @ManyToOne
+    @JoinColumn(name = "company_fk", referencedColumnName = "id")
+    private Company company;
+    @Column(name = "is_approved")
+    @Convert(converter = ApprovalStatusConverter.class)
+    private ApprovalStatus isApproved;
+    private LocalDateTime operationDate;
     private String operationBy;
-    private Integer accountId;
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -38,36 +40,36 @@ public class Request {
         this.requestType = requestType;
     }
 
-    public String getEntityType() {
+    public String getRequestDetails() {
+        return requestDetails;
+    }
+
+    public void setRequestDetails(String requestDetails) {
+        this.requestDetails = requestDetails;
+    }
+
+    public Integer getEntityType() {
         return entityType;
     }
 
-    public void setEntityType(String entityType) {
+    public void setEntityType(Integer entityType) {
         this.entityType = entityType;
     }
 
-    public Integer getCompanyId() {
-        return companyId;
+    public Company getCompany() {
+        return company;
     }
 
-    public void setCompanyId(Integer companyId) {
-        this.companyId = companyId;
+    public void setCompany(Company company) {
+        this.company = company;
     }
 
-    public String getCompanyName() {
-        return companyName;
+    public ApprovalStatus getIsApproved() {
+        return isApproved;
     }
 
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
-
-    public String getIsRequestApproved() {
-        return isRequestApproved;
-    }
-
-    public void setIsRequestApproved(String isRequestApproved) {
-        this.isRequestApproved = isRequestApproved;
+    public void setIsApproved(ApprovalStatus isApproved) {
+        this.isApproved = isApproved;
     }
 
     public LocalDateTime getOperationDate() {
@@ -85,13 +87,4 @@ public class Request {
     public void setOperationBy(String operationBy) {
         this.operationBy = operationBy;
     }
-
-    public Integer getAccountId() {
-        return accountId;
-    }
-
-    public void setAccountId(Integer accountId) {
-        this.accountId = accountId;
-    }
-
 }

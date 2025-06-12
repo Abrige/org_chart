@@ -45,13 +45,6 @@ public class AuthController {
                 new UsernamePasswordAuthenticationToken(authRequest.mail(), authRequest.password())
         );
         Optional<Account> account = accountRepository.findByMail(authRequest.mail());
-        /*
-        // se il ruolo dell'accunt in questione è admin
-        if(account.get().getRole().equals(roleRepository.findByName("ROLE_ADMIN"))){
-            // TODO aggiungere della logica per mandare il ruolo
-        }
-        */
-        // genera il token JWT
         String token = jwtUtils.generateToken((UserDetails) authentication.getPrincipal());
 
         return ResponseEntity.ok(new AuthResponseDTO(token));
