@@ -1,9 +1,11 @@
 package it.telematica.org_chart.controller;
+
 import it.telematica.org_chart.dto.CompanyDTO;
 import it.telematica.org_chart.dto.EmployeeDTO;
 import it.telematica.org_chart.dto.PaginationDTO;
 import it.telematica.org_chart.model.*;
 import it.telematica.org_chart.repository.*;
+import it.telematica.org_chart.service.CompanyService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -21,7 +23,8 @@ import java.util.Optional;
 @RestController
 public class HomeRestController {
 
-    private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+    private final CompanyService companyService;
+    private final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
     private CompanyRepository companyRepository;
     private EmployeeRepository employeeRepository;
@@ -29,17 +32,14 @@ public class HomeRestController {
     private CountriesRepository countriesRepository;
     private CitiesRepository citiesRepository;
 
-    public HomeRestController(CompanyRepository companyRepository,
-                              EmployeeRepository employeeRepository,
-                              CompanyHierarchiesRepository companyHierarchiesRepository,
-                              CountriesRepository countriesRepository,
-                              CitiesRepository citiesRepository) {
+    public HomeRestController(CompanyRepository companyRepository, EmployeeRepository employeeRepository, CompanyHierarchiesRepository companyHierarchiesRepository, CountriesRepository countriesRepository, CitiesRepository citiesRepository, CompanyService companyService) {
 
         this.companyRepository = companyRepository;
         this.employeeRepository = employeeRepository;
         this.companyHierarchiesRepository = companyHierarchiesRepository;
         this.countriesRepository = countriesRepository;
         this.citiesRepository = citiesRepository;
+        this.companyService = companyService;
     }
 
     // ritorna tutte le aziende
@@ -106,8 +106,7 @@ public class HomeRestController {
     // edit dei campi dell'employee
     @PostMapping(value = "/employee")
     public void editEmployeeData(@RequestBody EmployeeDTO employeeDTO) {
-        Employee existingEmployee = employeeRepository.findById(employeeDTO.id())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Employee not found"));
+        Employee existingEmployee = employeeRepository.findById(employeeDTO.id()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Employee not found"));
 
         if (employeeDTO.first_name() != null) {
             existingEmployee.setFirstName(employeeDTO.first_name());
@@ -133,8 +132,7 @@ public class HomeRestController {
     // edit dei campi dell'azienda
     @PostMapping(value = "/company")
     public void editCompanyData(@RequestBody CompanyDTO companyDTO) {
-        Company existingCompany = companyRepository.findById(companyDTO.id())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Company not found"));
+        Company existingCompany = companyRepository.findById(companyDTO.id()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Company not found"));
 
         if (companyDTO.name() != null) {
             existingCompany.setName(companyDTO.name());
@@ -153,7 +151,7 @@ public class HomeRestController {
     }
 
     // funzione di servizio per formattare in modo corretto la data
-    private Date parseDate(String dateString){
+    private Date parseDate(String dateString) {
         try {
             return formatter.parse(dateString);
         } catch (java.text.ParseException e) {
@@ -166,16 +164,34 @@ public class HomeRestController {
     @PutMapping("/employee")
     public ResponseEntity<String> createNewEmployee(@RequestBody EmployeeDTO employeeDTO) {
         Employee employee = new Employee();
+
         // campi obbligatori
         employee.setFirstName(employeeDTO.first_name());
         employee.setLast_name(employeeDTO.last_name());
+
         // campi opzionali
         employee.setBirthdate(employeeDTO.birthdate() != null && !employeeDTO.birthdate().isBlank() ? parseDate(employeeDTO.birthdate()) : null);
         employee.setSex(employeeDTO.sex() != null ? employeeDTO.sex() : null);
-        employee.setCity(employeeDTO.city_fk() != null ? citiesRepository.findById(employeeDTO.city_fk()).orElse(null) : null);
-        employee.setCompany(employeeDTO.company_fk() != null ? companyRepository.findById(employeeDTO.company_fk()).orElse(null) : null);
 
+        // city
+        if (employeeDTO.city_fk() != null) {
+            employee.setCity(citiesRepository.findById(employeeDTO.city_fk()).orElse(null));
+        }
+
+        // company
+        Company company = null;
+        if (employeeDTO.company_fk() != null) {
+            company = companyRepository.findById(employeeDTO.company_fk()).orElse(null);
+            employee.setCompany(company);
+        }
+
+        // salva dipendente
         employeeRepository.save(employee);
+
+        // aggiorna numOfEmployees solo se la company è presente
+        if (company != null) {
+            companyService.updateNumOfEmployees(company);
+        }
 
         return ResponseEntity.ok("Nuovo dipendente inserito con id: " + employee.getId());
     }
@@ -193,12 +209,13 @@ public class HomeRestController {
         company.setLogoUrl(companyDTO.logoUrl() != null ? companyDTO.logoUrl() : null);
         // imposta di default il numero di impiegati di un azienda a 0
         company.setNumOfEmployees(0);
-        
+
         companyRepository.save(company);
 
         return ResponseEntity.ok("Company salvata con successo con id: " + company.getId());
     }
 
+    // delete di un utente dal db
     @DeleteMapping("/employee/{id}")
     public ResponseEntity<Void> deleteEmployee(@PathVariable Integer id) {
         // Verifica se l'employee esiste
@@ -209,15 +226,26 @@ public class HomeRestController {
             return ResponseEntity.notFound().build();
         }
 
-        // imposta il campo deleted dell'employee a true
-        employeeOpt.get().setDeleted(true);
-        employeeOpt.get().setCompany(null);
-        // pusha i dati al db
-        employeeRepository.save(employeeOpt.get());
+        // prende l'employee
+        Employee employee = employeeOpt.get();
+
+        // Prende la company prima di rimuovere il riferimento
+        Company company = employee.getCompany();
+
+        employee.setDeleted(true); // imposta il campo deleted dell'employee a true
+        employee.setCompany(null); // leva il riferimento dell'azienda da quell'employee
+
+        employeeRepository.save(employee); // salva le modifiche sul db
+
+        // aggiorna il numero dei dipendenti, solo se company non è null
+        if (company != null) {
+            companyService.updateNumOfEmployees(company);
+        }
 
         return ResponseEntity.ok().build();
     }
 
+    // cancella una azienda
     @DeleteMapping("/company/{id}")
     public ResponseEntity<Void> deleteCompany(@PathVariable Integer id) {
         // Verifica se la company esiste
@@ -236,7 +264,7 @@ public class HomeRestController {
         companyRepository.save(companyOpt.get());
 
         // per ogni utente di quell'azienda imposta il campo deleted a true e a null l'azienda
-        for  (Employee employee : employees) {
+        for (Employee employee : employees) {
             employee.setCompany(null);
             employeeRepository.save(employee);
         }
