@@ -1,3 +1,4 @@
+import * as React from "react";
 import {useEffect, useState} from "react";
 import Typography from "@mui/material/Typography";
 import TableContainer from "@mui/material/TableContainer";
@@ -7,7 +8,6 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
-import * as React from "react";
 import EditIcon from '@mui/icons-material/Edit';
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -16,18 +16,20 @@ import {useDispatch, useSelector} from "react-redux";
 import {setCurrentEmployeeSelected, setEditingEmployeeId} from '../redux/slices/employeeSlice.js';
 import {useNavigate} from "react-router-dom";
 import Button from "@mui/material/Button";
-import {
-    ArrowBack as ArrowBackIcon,
-} from '@mui/icons-material';
+import {ArrowBack as ArrowBackIcon,} from '@mui/icons-material';
 import {setEditingCompany} from "../redux/slices/companySlice.js";
 import BASE_API_URL from "../config/config.js";
+import {canEdit} from "../utils/utils.js";
 
 function Company() {
     // STATE
     const [employees, setEmployees] = useState([]);
     // REDUX
     const selectedCompany = useSelector((state) => state.company.currentCompanySelected);
+    const employeeForCompanies = useSelector(state => state.auth.employeeForCompanies);
     const role = useSelector(state => state.auth.role);
+    const username = useSelector(state => state.auth.username);
+    const adminForCompanies = useSelector(state => state.auth.adminForCompanies);
     // NAVIGATE
     const navigate = useNavigate();
     // DISPATCH
@@ -67,15 +69,39 @@ function Company() {
 
     const handleCompanyDelete = async (event, company) => {
         try {
-            const response = await fetch(`${BASE_API_URL}/home/company/${company.id}`, {
-                method: 'DELETE'
-            });
 
-            if (response.ok) {
-                alert("Eliminazione riuscita");
-                navigate("/home");
+            if (role === 3 || role === 2 && adminForCompanies.includes(company.id)) {
+                const response = await fetch(`${BASE_API_URL}/home/company/${company.id}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    alert("Eliminazione riuscita");
+                    navigate("/home");
+                } else {
+                    throw new Error(`Errore: ${response.status}`);
+                }
             } else {
-                throw new Error(`Errore: ${response.status}`);
+                const response = await fetch(`${BASE_API_URL}/home/request`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        request_type: "d",
+                        request_details: "Delete " + company.name,
+                        entity_type: 0,
+                        company_fk: company.id,
+                        operation_by: username
+                    })
+                });
+
+                if (response.ok) {
+                    alert("Eliminazione riuscita");
+                    navigate("/home");
+                } else {
+                    throw new Error(`Errore: ${response.status}`);
+                }
             }
         } catch (error) {
             console.error('Errore durante l\'eliminazione:', error);
@@ -140,7 +166,7 @@ function Company() {
                     <Typography variant="h5" sx={{fontWeight: 600, color: 'text.primary'}}>
                         {selectedCompany.name}
                     </Typography>
-                    {role === 3 &&
+                    {canEdit(role, selectedCompany.id, adminForCompanies, employeeForCompanies) &&
                         <Box sx={{display: 'flex', gap: 1, ml: 'auto'}}>
                             <IconButton
                                 size="small"
@@ -219,7 +245,7 @@ function Company() {
                                     }}>
                                         Sesso
                                     </TableCell>
-                                    {role === 3 &&
+                                    {canEdit(role, selectedCompany.id, adminForCompanies) &&
                                         <TableCell align="right" sx={{
                                             fontWeight: 600,
                                             color: 'text.secondary',
@@ -272,7 +298,7 @@ function Company() {
                                         }}>
                                             {employee.sex ? employee.sex : "N/A"}
                                         </TableCell>
-                                        {role === 3 &&
+                                        {canEdit(role, selectedCompany.id, adminForCompanies) &&
                                             <TableCell align="right" sx={{py: 2}}>
                                                 <Box sx={{
                                                     display: 'flex',
@@ -323,32 +349,32 @@ function Company() {
                 ) : (
                     // Messaggio quando non ci sono dipendenti
                     <Box sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    py: 8,
-                    px: 4,
-                    textAlign: 'center'
-                }}>
-                <Typography variant="h6" sx={{
-                    color: 'text.secondary',
-                    mb: 1,
-                    fontWeight: 500
-                }}>
-                    Nessun dipendente trovato
-                </Typography>
-                <Typography variant="body2" sx={{
-                    color: 'text.secondary',
-                    opacity: 0.7
-                }}>
-                    Non ci sono dipendenti per questa azienda
-                </Typography>
-            </Box>)}
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        py: 8,
+                        px: 4,
+                        textAlign: 'center'
+                    }}>
+                        <Typography variant="h6" sx={{
+                            color: 'text.secondary',
+                            mb: 1,
+                            fontWeight: 500
+                        }}>
+                            Nessun dipendente trovato
+                        </Typography>
+                        <Typography variant="body2" sx={{
+                            color: 'text.secondary',
+                            opacity: 0.7
+                        }}>
+                            Non ci sono dipendenti per questa azienda
+                        </Typography>
+                    </Box>)}
+            </Box>
         </Box>
-</Box>
-)
-    ;
+    )
+        ;
 }
 
 export default Company;

@@ -4,6 +4,9 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import it.telematica.org_chart.model.Account;
+import it.telematica.org_chart.model.AccountCompanies;
+import it.telematica.org_chart.model.Company;
+import it.telematica.org_chart.repository.AccountCompaniesRepository;
 import it.telematica.org_chart.repository.AccountRepository;
 import it.telematica.org_chart.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,10 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 // Questa classe ha 3 compiti
 // genera i token
@@ -25,6 +25,7 @@ public class JwtUtils {
 
     private final AccountRepository accountRepository;
     private final RoleRepository roleRepository;
+    private final AccountCompaniesRepository accountCompaniesRepository;
     // prende il valore della chiave jwt.secret dal file application.properties
     // in modo da non doverlo scrivere sul codice java perchè è segreta
     @Value("${jwt.secret}")
@@ -33,9 +34,10 @@ public class JwtUtils {
     @Value("${jwt.expirationMs}")
     private int jwtExpirationMs;
 
-    public JwtUtils(AccountRepository accountRepository, RoleRepository roleRepository) {
+    public JwtUtils(AccountRepository accountRepository, RoleRepository roleRepository, AccountCompaniesRepository accountCompaniesRepository) {
         this.accountRepository = accountRepository;
         this.roleRepository = roleRepository;
+        this.accountCompaniesRepository = accountCompaniesRepository;
     }
 
     private SecretKey getSigningKey() {
@@ -52,8 +54,24 @@ public class JwtUtils {
         Optional<Account> account = accountRepository.findByMail(userDetails.getUsername());
 
         if (account.isPresent()) {
-            claims.put("role", account.get().getRole());
-        }else {
+            Account ac = account.get();
+
+            // Aziende dove l'utente è admin
+            List<AccountCompanies> adminCompanies = accountCompaniesRepository.findAdminsByAccountId(ac.getId());
+            // lista di id di Aziende in cui è admin
+            List<Integer> adminCompanyIds = adminCompanies.stream()
+                    .map(AccountCompanies::getCompanyId)
+                    .toList();
+
+            // lista di id di Aziende dove l'utente è dipendente
+            List<Integer> employeeCompanyIds = ac.getCompanies().stream()
+                    .map(Company::getId)
+                    .toList();
+
+            claims.put("role", ac.getRole());
+            claims.put("adminForCompanies", adminCompanyIds);
+            claims.put("employeeForCompanies", employeeCompanyIds);
+        } else {
             claims.put("role", roleRepository.findByName("ROLE_USER"));
         }
 

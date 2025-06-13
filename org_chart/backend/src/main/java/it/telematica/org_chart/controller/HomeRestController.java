@@ -3,6 +3,8 @@ package it.telematica.org_chart.controller;
 import it.telematica.org_chart.dto.CompanyDTO;
 import it.telematica.org_chart.dto.EmployeeDTO;
 import it.telematica.org_chart.dto.PaginationDTO;
+import it.telematica.org_chart.dto.RequestDataDTO;
+import it.telematica.org_chart.enums.ApprovalStatus;
 import it.telematica.org_chart.model.*;
 import it.telematica.org_chart.repository.*;
 import it.telematica.org_chart.service.CompanyService;
@@ -25,6 +27,7 @@ public class HomeRestController {
 
     private final CompanyService companyService;
     private final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+    private final RequestRepository requestRepository;
 
     private CompanyRepository companyRepository;
     private EmployeeRepository employeeRepository;
@@ -32,7 +35,7 @@ public class HomeRestController {
     private CountriesRepository countriesRepository;
     private CitiesRepository citiesRepository;
 
-    public HomeRestController(CompanyRepository companyRepository, EmployeeRepository employeeRepository, CompanyHierarchiesRepository companyHierarchiesRepository, CountriesRepository countriesRepository, CitiesRepository citiesRepository, CompanyService companyService) {
+    public HomeRestController(CompanyRepository companyRepository, EmployeeRepository employeeRepository, CompanyHierarchiesRepository companyHierarchiesRepository, CountriesRepository countriesRepository, CitiesRepository citiesRepository, CompanyService companyService, RequestRepository requestRepository) {
 
         this.companyRepository = companyRepository;
         this.employeeRepository = employeeRepository;
@@ -40,6 +43,7 @@ public class HomeRestController {
         this.countriesRepository = countriesRepository;
         this.citiesRepository = citiesRepository;
         this.companyService = companyService;
+        this.requestRepository = requestRepository;
     }
 
     // ritorna tutte le aziende
@@ -268,6 +272,21 @@ public class HomeRestController {
             employee.setCompany(null);
             employeeRepository.save(employee);
         }
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/request")
+    public ResponseEntity<String> createRequest(@RequestBody RequestDataDTO requestDataDTO) {
+        Request request = new Request();
+        request.setRequestType(requestDataDTO.request_type());
+        request.setRequestDetails(requestDataDTO.request_details());
+        request.setEntityType(requestDataDTO.entity_type());
+        request.setCompany(companyRepository.findById(requestDataDTO.company_fk()).orElse(null));
+        request.setOperationBy(requestDataDTO.operation_by());
+        request.setIsApproved(ApprovalStatus.TO_REVIEW);
+
+        requestRepository.save(request);
 
         return ResponseEntity.ok().build();
     }

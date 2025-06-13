@@ -23,6 +23,7 @@ import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {setEditingEmployeeId} from "../redux/slices/employeeSlice.js";
 import BASE_API_URL from "../config/config.js";
+import {canEdit} from "../utils/utils.js";
 
 const EmployeeDetailPage = () => {
     // Dati di esempio per l'impiegato
@@ -32,7 +33,9 @@ const EmployeeDetailPage = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     // REDUX STATE
+    const selectedCompany = useSelector((state) => state.company.currentCompanySelected);
     const role = useSelector(state => state.auth.role);
+    const adminForCompanies = useSelector(state => state.auth.adminForCompanies);
 
     useEffect(() => {
         if (employeeId) {
@@ -137,7 +140,7 @@ const EmployeeDetailPage = () => {
                             </Avatar>
 
                             {/* Azioni sotto l'avatar */}
-                            {role === 3 &&
+                            {canEdit(role, selectedCompany.id, adminForCompanies) &&
                                 <Box sx={{ display: 'flex', gap: 1 }}>
                                     <IconButton
                                         size="small"

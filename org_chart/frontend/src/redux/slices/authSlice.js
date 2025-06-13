@@ -5,6 +5,8 @@ const initialState = {
     token: null,
     username: null,
     role: null, // 1 = USER, 2 = COMPANY_ADMIN, 3 = SYSTEM_ADMIN
+    adminForCompanies: null, // gli id delle company per cui si è COMPANY_ADMIN
+    employeeForCompanies: null, // gli id delle company per cui è dipendente
     issuedAt: null,
     expiresAt: null,
 };
@@ -28,6 +30,8 @@ const authSlice = createSlice({
                 // dal payload del token possiamo anche prendere username e durata della sua validita' (da iat a exp)
                 state.username = decodedToken.sub;
                 state.role = decodedToken.role.id;
+                state.adminForCompanies = decodedToken.adminForCompanies;
+                state.employeeForCompanies = decodedToken.employeeForCompanies;
                 state.issuedAt = decodedToken.iat;
                 state.expiresAt = decodedToken.exp;
             }
@@ -36,6 +40,8 @@ const authSlice = createSlice({
             state.token = null;
             state.username = null;
             state.role = null;
+            state.adminForCompanies = null;
+            state.employeeForCompanies = null;
             state.issuedAt = null;
             state.expiresAt = null;
         },

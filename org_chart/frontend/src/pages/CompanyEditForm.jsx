@@ -27,6 +27,9 @@ export default function CompanyEditForm() {
     // Redux state
     const editingCompany = useSelector(state => state.company.editingCompany);
     const navigate = useNavigate();
+    const role = useSelector(state => state.auth.role);
+    const username = useSelector(state => state.auth.username);
+    const adminForCompanies = useSelector(state => state.auth.adminForCompanies);
 
     useEffect(() => {
         const loadCitiesAndSetForm = async () => {
@@ -221,14 +224,32 @@ export default function CompanyEditForm() {
                 ...updateFields
             };
 
-            // Esegui la richiesta POST o PUT
-            const response = await fetch(`${BASE_API_URL}/home/company`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(updateData)
-            });
+            let response;
+
+            if (role === 3 || role === 2 && adminForCompanies.includes(editingCompany.id)){
+                // Esegui la richiesta POST o PUT
+                response = await fetch(`${BASE_API_URL}/home/company`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(updateData)
+                });
+            }else{
+                response = await fetch(`${BASE_API_URL}/home/request`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        request_type: "d",
+                        request_details: JSON.stringify(updateData),
+                        entity_type: 0,
+                        company_fk: editingCompany.id,
+                        operation_by: username
+                    })
+                });
+            }
 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);

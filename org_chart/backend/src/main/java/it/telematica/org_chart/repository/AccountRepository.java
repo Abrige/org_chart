@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface AccountRepository extends CrudRepository<Account, Integer> {
     // ritorna l'account in base all'username
     Optional<Account> findByMail(String mail);
+
 }

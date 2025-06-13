@@ -88,8 +88,6 @@ function LoginForm() {
 
         if (!loginForm.password) {
             errors.password = 'Password richiesta';
-        } else if (loginForm.password.length < 6) {
-            errors.password = 'Password deve essere almeno 6 caratteri';
         }
 
         setLoginErrors(errors);
