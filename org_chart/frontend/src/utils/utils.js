@@ -1,0 +1,1 @@
+import BASE_API_URL from "../config/config.js";
