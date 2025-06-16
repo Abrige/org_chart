@@ -1,6 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Start Backend + Frontend" type="CompoundRunConfigurationType">
     <toRun name="Frontend" type="js.build_tools.npm" />
+    <toRun name="Install npm Dependecies" type="ShConfigurationType" />
     <toRun name="Backend" type="SpringBootApplicationConfigurationType" />
     <method v="2" />
   </configuration>
