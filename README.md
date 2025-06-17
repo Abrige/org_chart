@@ -33,6 +33,12 @@ Questa applicazione consente di creare e visualizzare organigrammi dinamici per 
 
 ---
 
+## 📈 Kanban
+
+🔗 **[Visualizza il Kanban](https://kanbanflow.com/board/sCjnv7V)**
+
+---
+
 ## 🗂️ Struttura del Progetto
 
 ```
