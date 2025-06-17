@@ -38,17 +38,17 @@ Questa applicazione consente di creare e visualizzare organigrammi dinamici per 
 ```
 .
 ├── DB/
-│   └── org_chart.sql                 # Script SQL del database
+│   └── org_chart.sql                # Script SQL del database
 ├── DataModel/
-│   ├── VisualParadigm/
-│   └── orgchart_datamodel.xlsx
+│   ├── VisualParadigm/              # File E/R del database
+│   └── orgchart_datamodel.xlsx      # Modello database in Excel
 ├── Progettazione/
-│   └── Mock-Up.pdf
-├── org_chart/                        # Cartella principale
-│   ├── backend/                      # Codice Spring Boot
-│   └── frontend/                     # Codice React
-├── LICENSE
-└── README.md
+│   └── Mock-Up.pdf                  # Progetto del sito (mockup)
+├── org_chart/                      # Cartella principale del progetto
+│   ├── backend/                    # Codice backend (Spring Boot)
+│   └── frontend/                   # Codice frontend (React)
+├── LICENSE                        # Licenza del progetto
+└── README.md                      # Spiegazione e istruzioni progetto
 ```
 ---
 
